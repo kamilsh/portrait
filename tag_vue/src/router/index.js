@@ -7,6 +7,7 @@ import Personal from '../components/basic/Personal'
 import Business from '../components/basic/Business'
 import Action from '../components/basic/Action'
 import Value from '../components/basic/Value'
+import Portrait from '../components/portrait/Portrait'
 
 Vue.use(Router)
 
@@ -57,6 +58,11 @@ export default new Router({
               component: Value
             }
           ]
+        },
+        {
+          path: '/home/portrait',
+          name: 'portrait',
+          component: Portrait
         }
       ]
     }

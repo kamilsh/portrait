@@ -1,24 +1,29 @@
 <template>
-  <el-container style="height: 95vh">
+  <el-container>
     <el-header>
       <span style="position: absolute;padding-top: 20px;font-size: 20px;font-weight: bold">电商平台(综合商城)</span>
     </el-header>
-    <el-aside style="width: 200px">
-      <el-menu default-active="1" background-color="#EEE5DE" @select="select">
-        <el-submenu index="1">
-          <template slot="title"><i class="el-icon-document-copy"></i>基础标签</template>
-          <el-menu-item-group>
-            <el-menu-item index="1-1"><i class="el-icon-user-solid"></i>人口属性</el-menu-item>
-            <el-menu-item index="1-2"><i class="el-icon-s-goods"></i>商业属性</el-menu-item>
-            <el-menu-item index="1-3"><i class="el-icon-video-camera-solid"></i>行为属性</el-menu-item>
-            <el-menu-item index="1-4"><i class="el-icon-s-finance"></i>用户价值</el-menu-item>
-          </el-menu-item-group>
-        </el-submenu>
-      </el-menu>
-    </el-aside>
-    <el-main>
-      <router-view/>
-    </el-main>
+    <el-container style="height: 95vh">
+      <el-aside style="width: 200px">
+        <el-menu default-active="1" background-color="#EEE5DE" @select="select">
+          <el-submenu index="1">
+            <template slot="title"><i class="el-icon-s-help"></i>基础标签</template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1"><i class="el-icon-user-solid"></i>人口属性</el-menu-item>
+              <el-menu-item index="1-2"><i class="el-icon-s-goods"></i>商业属性</el-menu-item>
+              <el-menu-item index="1-3"><i class="el-icon-video-camera-solid"></i>行为属性</el-menu-item>
+              <el-menu-item index="1-4"><i class="el-icon-s-finance"></i>用户价值</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-menu-item index="2">
+            <template slot="title"><i class="el-icon-s-data"></i>用户画像</template>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <router-view/>
+      </el-main>
+    </el-container>
   </el-container>
 </template>
 
@@ -43,6 +48,9 @@ export default {
           break
         case '1-4':
           this.$router.push('/home/basic/value')
+          break
+        case '2':
+          this.$router.push('/home/portrait')
           break
       }
     }
