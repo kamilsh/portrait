@@ -15,6 +15,7 @@
     <description>Tag Model for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
+        <hbase-spring-boot>1.0.0.RELEASE</hbase-spring-boot>
     </properties>
     <dependencies>
         <dependency>
@@ -53,6 +54,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
             <version>2.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.spring4all</groupId>
+            <artifactId>spring-boot-starter-hbase</artifactId>
+            <version>${hbase-spring-boot}</version>
         </dependency>
     </dependencies>
 
