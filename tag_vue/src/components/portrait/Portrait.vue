@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import SearchBar from '../basic/SearchBar'
+import SearchBar from '../common/SearchBar'
 export default {
   name: 'Portrait',
   components: {SearchBar},
@@ -68,7 +68,7 @@ export default {
             top: 'center',
             right: null,
             bottom: null,
-            width: '80%',
+            width: '60%',
             height: '100%',
             // 数据
             data: this.worddata
@@ -80,11 +80,15 @@ export default {
     },
     getData () {
       this.$axios.get('/portrait/' + this.$refs.searchBar.keywords + '/').then(resp => {
-        if (resp.status === 200) {
+        if (resp.data.code === 200) {
           this.worddata = resp.data.data
           // console.log(resp)
           console.log(this.worddata)
           this.initChart()
+        } else {
+          this.$alert(resp.data.message, '提示', {
+            confirmButtonText: '确定'
+          })
         }
       }).catch(failResponse => {
         this.$message('加载失败')

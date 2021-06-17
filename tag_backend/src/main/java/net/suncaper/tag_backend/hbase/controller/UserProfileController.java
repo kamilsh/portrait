@@ -33,6 +33,21 @@ public class UserProfileController {
     public Result getUserProfileValueByRowkey(@PathVariable String rowkey) throws IOException {
         System.out.println(rowkey);
         List<JSONObject> output = TableUtil.getValueByRowkey("user_profile", null, rowkey);
+        if (output.isEmpty())
+            return ResultFactory.buildFailResult(String.format("未找到rowkey为%s的用户", rowkey));
         return ResultFactory.buildSuccessResult(output);
     }
+
+    @CrossOrigin
+    @GetMapping("/api/tree/{rowkey}")
+    public Result getUserProfileTreeByRowkey(@PathVariable String rowkey) throws IOException {
+        System.out.println(rowkey);
+        List<JSONObject> output = TableUtil.getTreeByRowkey("user_profile", null, rowkey);
+        if (output == null)
+            return ResultFactory.buildFailResult(String.format("未找到rowkey为%s的用户", rowkey));
+//        System.out.println(output);
+        return ResultFactory.buildSuccessResult(output);
+    }
+
+
 }
