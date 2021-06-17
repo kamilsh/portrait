@@ -8,10 +8,7 @@ import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TableUtil {
     public static Table getTable(Connection conn, String table, String namespace) throws IOException {
@@ -45,7 +42,7 @@ public class TableUtil {
 
     private static List<String> getResultString(Result result) {
         List<String> list = new ArrayList<>();
-        String output = "";
+        String output;
         Cell[] cells = result.rawCells();
         Map<String, Object> map = new HashMap<>();
         for (Cell cell:cells) {
@@ -64,9 +61,11 @@ public class TableUtil {
         return list;
     }
 
-    public static List<String> getValueByRowkey(String tableName, String namespace, String rowkey) throws IOException {
+    public static List<JSONObject> getValueByRowkey(String tableName, String namespace, String rowkey) throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Random random = new Random();
+
         Connection conn = ConnectionUtil.getConn();
-        List<String> output = new ArrayList<>();
         Table table = getTable(conn, tableName, namespace);
         Get get = new Get(Bytes.toBytes(rowkey));
         Result result = table.get(get);
@@ -74,16 +73,21 @@ public class TableUtil {
             Cell[] cells = result.rawCells();
             for (Cell cell : cells) {
                 String qualifier = Bytes.toString(CellUtil.cloneQualifier(cell));
-                if ("purchase_goods".equals(qualifier))
-                    continue;
                 String value = Bytes.toString(CellUtil.cloneValue(cell));
                 String[] strings = value.split(",");
-                for (String string : strings) {
-                    output.add(string);
+                for (String s : strings) {
+                    int randomValue = random.nextInt(5000) + 1000;
+                    if ("purchase_goods".equals(qualifier) || "browse_products".equals(qualifier))
+                        randomValue = random.nextInt(500) + 100;
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("name", s);
+                    map.put("value", randomValue);
+                    output.add(new JSONObject(map));
                 }
             }
         }
         conn.close();
+        System.out.println(output);
         return output;
     }
 }

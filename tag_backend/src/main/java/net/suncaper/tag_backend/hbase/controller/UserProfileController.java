@@ -32,16 +32,7 @@ public class UserProfileController {
     @GetMapping("/api/portrait/{rowkey}")
     public Result getUserProfileValueByRowkey(@PathVariable String rowkey) throws IOException {
         System.out.println(rowkey);
-        List<String> nameValue = TableUtil.getValueByRowkey("user_profile", null, rowkey);
-        List<JSONObject> output = new ArrayList<>();
-        Random random = new Random();
-        for (String s : nameValue) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("name", s);
-            map.put("value", random.nextInt(10000) + 100);
-            output.add(new JSONObject(map));
-        }
-        System.out.println(output);
+        List<JSONObject> output = TableUtil.getValueByRowkey("user_profile", null, rowkey);
         return ResultFactory.buildSuccessResult(output);
     }
 }
