@@ -3,12 +3,12 @@ package net.suncaper.tag_backend.result;
 public class Result {
     private int code;
     private String message;
-    private Object result;
+    private Object data;
 
     Result(int code, String message, Object data) {
         this.code = code;
         this.message = message;
-        this.result = data;
+        this.data = data;
     }
 
     public void setCode(int code) {
@@ -19,8 +19,8 @@ public class Result {
         this.message = message;
     }
 
-    public void setResult(Object result) {
-        this.result = result;
+    public void setData(Object data) {
+        this.data = data;
     }
 
     public int getCode() {
@@ -31,7 +31,7 @@ public class Result {
         return message;
     }
 
-    public Object getResult() {
-        return result;
+    public Object getData() {
+        return data;
     }
 }

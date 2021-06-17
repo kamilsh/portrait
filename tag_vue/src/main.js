@@ -6,8 +6,11 @@ import router from './router'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import * as echarts from 'echarts'
+import 'echarts-wordcloud'
+Vue.prototype.$echarts = echarts
 
-var axios = require('axios')
+const axios = require('axios')
 axios.defaults.baseURL = 'http://localhost:8888/api'
 
 Vue.prototype.$axios = axios

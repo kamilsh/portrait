@@ -1,28 +1,47 @@
 package net.suncaper.tag_backend.hbase.controller;
 
-import net.suncaper.tag_backend.hbase.pojo.UserProfile;
-import net.suncaper.tag_backend.hbase.service.UserProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.fastjson.JSONObject;
+import net.suncaper.tag_backend.hbase.utils.ConnectionUtil;
+import net.suncaper.tag_backend.hbase.utils.TableUtil;
+import net.suncaper.tag_backend.result.Result;
+import net.suncaper.tag_backend.result.ResultFactory;
+import org.apache.hadoop.hbase.client.Connection;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.util.*;
 
 @RestController
 public class UserProfileController {
-    @Autowired
-    private UserProfileService userProfileService;
 
     @CrossOrigin
     @GetMapping("/api/portrait")
-    public UserProfile getUserProfile() {
-        System.setProperty("hadoop.home.dir", "C:\\Users\\Administrator\\AppData\\Local\\hadoop-2.9.2");
+    public Result getUserProfile() throws IOException {
         System.out.println("here: api/portrait 99");
-        return userProfileService.query("99");
+        Connection conn = ConnectionUtil.getConn();
+        List<String> json = TableUtil.get(conn, "user_profile", null, "99");
+        conn.close();
+        System.out.println(json);
+        return ResultFactory.buildSuccessResult(json);
     }
 
     @CrossOrigin
-    @GetMapping("/api/hello")
-    public void hello() {
-        System.out.print("Hello");
+    @GetMapping("/api/portrait/{rowkey}")
+    public Result getUserProfileValueByRowkey(@PathVariable String rowkey) throws IOException {
+        System.out.println(rowkey);
+        List<String> nameValue = TableUtil.getValueByRowkey("user_profile", null, rowkey);
+        List<JSONObject> output = new ArrayList<>();
+        Random random = new Random();
+        for (String s : nameValue) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", s);
+            map.put("value", random.nextInt(10000) + 100);
+            output.add(new JSONObject(map));
+        }
+        System.out.println(output);
+        return ResultFactory.buildSuccessResult(output);
     }
 }

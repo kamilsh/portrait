@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TagBackendApplication {
 
     public static void main(String[] args) {
+        System.setProperty("hadoop.home.dir", "C:\\Users\\Administrator\\AppData\\Local\\hadoop-2.9.2");
         SpringApplication.run(TagBackendApplication.class, args);
     }
 
