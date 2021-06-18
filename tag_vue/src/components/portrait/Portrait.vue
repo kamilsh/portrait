@@ -15,10 +15,6 @@ export default {
       worddata: ''
     }
   },
-  mounted: function () {
-    // this.initChart()
-  },
-
   methods: {
     initChart () {
       this.chart = this.$echarts.init(document.getElementById('wordcloud'))

@@ -9,6 +9,8 @@ import Action from '../components/basic/Action'
 import Value from '../components/basic/Value'
 import Portrait from '../components/portrait/Portrait'
 import Tree from '../components/basic/Tree'
+import Gender from '../components/basic/charts/Gender'
+import AgeGroup from '../components/basic/charts/AgeGroup'
 
 Vue.use(Router)
 
@@ -41,7 +43,19 @@ export default new Router({
             {
               path: '/home/basic/personal',
               name: 'personal',
-              component: Personal
+              component: Personal,
+              children: [
+                {
+                  path: '/home/basic/personal/gender',
+                  name: 'gender',
+                  component: Gender
+                },
+                {
+                  path: '/home/basic/personal/ageGroup',
+                  name: 'ageGroup',
+                  component: AgeGroup
+                }
+              ]
             },
             {
               path: '/home/basic/business',
@@ -71,6 +85,11 @@ export default new Router({
           component: Tree
         }
       ]
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: AgeGroup
     }
   ]
 })

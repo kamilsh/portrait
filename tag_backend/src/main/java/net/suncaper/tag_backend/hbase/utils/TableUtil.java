@@ -3,14 +3,20 @@ package net.suncaper.tag_backend.hbase.utils;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
+import org.apache.hadoop.hbase.CompareOperator;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.filter.Filter;
+import org.apache.hadoop.hbase.filter.QualifierFilter;
+import org.apache.hadoop.hbase.filter.SubstringComparator;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
 import java.util.*;
 
 public class TableUtil {
+    private static final String user_profile = "user_profile";
+
     public static Table getTable(Connection conn, String table, String namespace) throws IOException {
         TableName tableName = TableName.valueOf(namespace, table);
         return conn.getTable(tableName);
@@ -45,7 +51,7 @@ public class TableUtil {
         String output;
         Cell[] cells = result.rawCells();
         Map<String, Object> map = new HashMap<>();
-        for (Cell cell:cells) {
+        for (Cell cell : cells) {
             String row = Bytes.toString(CellUtil.cloneRow(cell));
             String family = Bytes.toString(CellUtil.cloneFamily(cell));
             String qualifier = Bytes.toString(CellUtil.cloneQualifier(cell));
@@ -132,5 +138,107 @@ public class TableUtil {
         jsonObject.put("name", String.format("rowkey: %s", rowkey));
         rowkeyList.add(jsonObject);
         return rowkeyList;
+    }
+
+    // 根据列名来查询多行
+    public static ResultScanner qualifierFilter(String tableName, String qualifier) throws IOException {
+        Connection conn = ConnectionUtil.getConn();
+        Table table = conn.getTable(TableName.valueOf(tableName));
+        Scan scan = new Scan();
+        Filter filter = new QualifierFilter(CompareOperator.EQUAL, new SubstringComparator(qualifier));
+        scan.setFilter(filter);
+        return table.getScanner(scan);
+    }
+
+    public static List<JSONObject> getGender() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int male = 0;
+        int female = 0;
+
+        for (Result result : qualifierFilter(user_profile, "gender")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                if ("男".equals(value)) {
+                    male++;
+                } else if ("女".equals(value)) {
+                    female++;
+                } else System.out.printf("性别错误，读取到性别为%s", value);
+            }
+        }
+        map.put("男", male);
+        map.put("女", female);
+
+        for (String gender : Arrays.asList("男", "女")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(gender));
+            jsonObject.put("name", gender);
+            output.add(jsonObject);
+        }
+        return output;
+    }
+
+    public static List<JSONObject> getAgeGroup() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int age50 = 0;
+        int age60 = 0;
+        int age70 = 0;
+        int age80 = 0;
+        int age90 = 0;
+        int age00 = 0;
+        int age10 = 0;
+        int age20 = 0;
+
+        for (Result result : qualifierFilter(user_profile, "AgeGroup")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "50后":
+                        age50++;
+                        break;
+                    case "60后":
+                        age60++;
+                        break;
+                    case "70后":
+                        age70++;
+                        break;
+                    case "80后":
+                        age80++;
+                        break;
+                    case "90后":
+                        age90++;
+                        break;
+                    case "00后":
+                        age00++;
+                        break;
+                    case "10后":
+                        age10++;
+                        break;
+                    case "20后":
+                        age20++;
+                        break;
+                    default:
+                        System.out.println("ageGroup错误，读取到ageGroup为" + value);
+                }
+            }
+        }
+        map.put("50后", age50);
+        map.put("60后", age60);
+        map.put("70后", age70);
+        map.put("80后", age80);
+        map.put("90后", age90);
+        map.put("00后", age00);
+        map.put("10后", age10);
+        map.put("20后", age20);
+
+        for (String s : Arrays.asList("50后", "60后", "70后", "80后", "90后", "00后", "10后", "20后")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
     }
 }

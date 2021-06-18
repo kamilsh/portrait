@@ -98,7 +98,7 @@ export default {
         if (resp.data.code === 200) {
           this.treeData = resp.data.data[0]
           // console.log(resp)
-          console.log(this.treeData)
+          // console.log(this.treeData)
           this.initChart()
         } else {
           this.$alert(resp.data.message, '提示', {
@@ -109,9 +109,6 @@ export default {
         this.$message('加载失败')
       })
     }
-  },
-  mounted () {
-    this.getData()
   }
 }
 </script>
