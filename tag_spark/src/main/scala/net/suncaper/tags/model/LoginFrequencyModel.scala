@@ -1,11 +1,9 @@
 package net.suncaper.tags.model
 
 import org.apache.spark.sql.execution.datasources.hbase.HBaseTableCatalog
-import org.apache.spark.sql.expressions.{Window, WindowSpec}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-//登录频率标签
 object LoginFrequencyModel {
   def main(args: Array[String]): Unit = {
     def catalog =

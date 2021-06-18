@@ -5,7 +5,7 @@ import org.apache.spark.sql.expressions.{Window, WindowSpec}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-//购买商品标签
+
 object BrowseProductsModel {
   def main(args: Array[String]): Unit = {
     def catalog =
@@ -30,17 +30,12 @@ object BrowseProductsModel {
          |}
          |}""".stripMargin
 
-
     val spark = SparkSession.builder()
       .appName("shc test")
       .master("local[10]")
       .getOrCreate()
 
     import spark.implicits._
-
-
-
-
 
     val readDF01: DataFrame = spark.read
       .option(HBaseTableCatalog.tableCatalog, catalog)
@@ -110,5 +105,7 @@ object BrowseProductsModel {
       .option(HBaseTableCatalog.newTable, "5")
       .format("org.apache.spark.sql.execution.datasources.hbase")
       .save()
+
+    spark.stop()
   }
 }

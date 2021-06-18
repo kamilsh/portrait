@@ -2,9 +2,8 @@ package net.suncaper.tags.model
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.execution.datasources.hbase.HBaseTableCatalog
-import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
-//购买商品标签
+
 object PurchaseGoodsModel {
   def main(args: Array[String]): Unit = {
     def catalog =
