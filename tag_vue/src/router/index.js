@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Login from '../components/Login'
-import Home from '../components/Home'
+import Login from '../components/common/Login'
+import Home from '../components/common/Home'
 import Personal from '../components/basic/Personal'
 import Business from '../components/basic/Business'
 import Action from '../components/basic/Action'
 import Value from '../components/basic/Value'
 import Portrait from '../components/portrait/Portrait'
+import Tree from '../components/basic/Tree'
 
 Vue.use(Router)
 
@@ -63,6 +64,11 @@ export default new Router({
           path: '/home/portrait',
           name: 'portrait',
           component: Portrait
+        },
+        {
+          path: '/home/tree',
+          name: 'tree',
+          component: Tree
         }
       ]
     }

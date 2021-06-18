@@ -90,4 +90,47 @@ public class TableUtil {
         System.out.println(output);
         return output;
     }
+
+    public static List<JSONObject> getTreeByRowkey(String tableName, String namespace, String rowkey) throws IOException {
+        List<JSONObject> qualifyList = new ArrayList<>();
+        List<JSONObject> familyList = new ArrayList<>();
+        List<JSONObject> rowkeyList = new ArrayList<>();
+        // 取hbase的行
+        Connection conn = ConnectionUtil.getConn();
+        Table table = getTable(conn, tableName, namespace);
+        Get get = new Get(Bytes.toBytes(rowkey));
+        Result result = table.get(get);
+        // 处理row
+        if (result != null) {
+            Cell[] cells = result.rawCells();
+            for (Cell cell : cells) {
+                List<JSONObject> valueList = new ArrayList<>();
+                String qualifier = Bytes.toString(CellUtil.cloneQualifier(cell));
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                String[] values = value.split(",");
+                for (String s : values) {
+//                    Map<String, Object> mapValues = new HashMap<>();
+//                    mapValues.put("name", s);
+//                    valueList.add(new JSONObject(mapValues));
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("name", s);
+                    valueList.add(jsonObject);
+                }
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("children", valueList);
+                jsonObject.put("name", qualifier);
+                qualifyList.add(jsonObject);
+            }
+        }
+        if (qualifyList.isEmpty()) return null;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("children", qualifyList);
+        jsonObject.put("name", "cf");
+        familyList.add(jsonObject);
+        jsonObject = new JSONObject();
+        jsonObject.put("children", familyList);
+        jsonObject.put("name", String.format("rowkey: %s", rowkey));
+        rowkeyList.add(jsonObject);
+        return rowkeyList;
+    }
 }

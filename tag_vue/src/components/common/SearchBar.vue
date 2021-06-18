@@ -2,7 +2,7 @@
   <div style="margin-bottom: 30px;display: flex;justify-content: center;align-items: center">
     <el-input
       @keyup.enter.native="searchClick"
-      placeholder="输入rowkey查询用户画像..."
+      placeholder="输入rowkey查询..."
       prefix-icon="el-icon-search"
       style="width: 400px;margin-right: 10px;margin-top: 20px"
       v-model="keywords">

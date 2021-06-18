@@ -15,9 +15,13 @@
               <el-menu-item index="1-4"><i class="el-icon-s-finance"></i>用户价值</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="2">
+          <el-submenu index="2">
             <template slot="title"><i class="el-icon-s-data"></i>用户画像</template>
-          </el-menu-item>
+            <el-menu-item-group>
+              <el-menu-item index="2-1"><i class="el-icon-s-grid"></i>词云</el-menu-item>
+              <el-menu-item index="2-2"><i class="el-icon-s-operation"></i>标签结构分析</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <el-main>
@@ -49,8 +53,11 @@ export default {
         case '1-4':
           this.$router.push('/home/basic/value')
           break
-        case '2':
+        case '2-1':
           this.$router.push('/home/portrait')
+          break
+        case '2-2':
+          this.$router.push('/home/tree')
           break
       }
     }

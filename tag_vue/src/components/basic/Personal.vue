@@ -10,7 +10,7 @@
     </el-table-column>
     <el-table-column
       prop="business"
-      label="描述"
+      label="值"
       width="500">
     </el-table-column>
     <el-table-column
