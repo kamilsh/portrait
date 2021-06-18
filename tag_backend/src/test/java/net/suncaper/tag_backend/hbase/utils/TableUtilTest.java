@@ -1,6 +1,5 @@
 package net.suncaper.tag_backend.hbase.utils;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.hadoop.hbase.client.Connection;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,5 +61,15 @@ class TableUtilTest {
     @Test
     void getAgeGroup() throws IOException {
         System.out.println(TableUtil.getAgeGroup());
+    }
+
+    @Test
+    void getPoliticalStatus() throws IOException {
+        System.out.println(TableUtil.getPoliticalStatus());
+    }
+
+    @Test
+    void getJob() throws IOException {
+        System.out.println(TableUtil.getJob());
     }
 }

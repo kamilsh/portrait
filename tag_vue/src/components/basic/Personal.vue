@@ -61,17 +61,6 @@ export default {
           'remark': 'AgeGroup'
         },
         {
-          'id': 10,
-          'name': '身高',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的身高',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': 'stature'
-        },
-        {
           'id': 11,
           'name': '民族',
           'industry': '标签',
@@ -196,6 +185,14 @@ export default {
         case '年龄段':
           console.log('route->ageGroup')
           this.$router.push('/home/basic/personal/ageGroup')
+          break
+        case '政治面貌':
+          console.log('route->politicalStatus')
+          this.$router.push('/home/basic/personal/politicalStatus')
+          break
+        case '职业':
+          console.log('route->job')
+          this.$router.push('/home/basic/personal/job')
           break
       }
     },

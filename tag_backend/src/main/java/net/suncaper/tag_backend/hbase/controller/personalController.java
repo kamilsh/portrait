@@ -25,4 +25,18 @@ public class personalController {
         return ResultFactory.buildSuccessResult(TableUtil.getAgeGroup());
     }
 
+    @CrossOrigin
+    @GetMapping("/api/personal/politicalStatus")
+    public Result getPoliticalStatus() throws IOException {
+        System.out.println("/api/personal/politicalStatus");
+        return ResultFactory.buildSuccessResult(TableUtil.getPoliticalStatus());
+    }
+
+    @CrossOrigin
+    @GetMapping("/api/personal/job")
+    public Result getJob() throws IOException {
+        System.out.println("/api/personal/job");
+        return ResultFactory.buildSuccessResult(TableUtil.getJob());
+    }
+
 }

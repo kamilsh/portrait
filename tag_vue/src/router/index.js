@@ -11,6 +11,8 @@ import Portrait from '../components/portrait/Portrait'
 import Tree from '../components/basic/Tree'
 import Gender from '../components/basic/charts/Gender'
 import AgeGroup from '../components/basic/charts/AgeGroup'
+import PoliticalStatus from '../components/basic/charts/PoliticalStatus'
+import Job from '../components/basic/charts/Job'
 
 Vue.use(Router)
 
@@ -54,6 +56,16 @@ export default new Router({
                   path: '/home/basic/personal/ageGroup',
                   name: 'ageGroup',
                   component: AgeGroup
+                },
+                {
+                  path: '/home/basic/personal/politicalStatus',
+                  name: 'politicalStatus',
+                  component: PoliticalStatus
+                },
+                {
+                  path: '/home/basic/personal/job',
+                  name: 'Job',
+                  component: Job
                 }
               ]
             },
@@ -89,7 +101,7 @@ export default new Router({
     {
       path: '/test',
       name: 'test',
-      component: AgeGroup
+      component: PoliticalStatus
     }
   ]
 })

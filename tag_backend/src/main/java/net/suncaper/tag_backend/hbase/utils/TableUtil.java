@@ -219,7 +219,7 @@ public class TableUtil {
                         age20++;
                         break;
                     default:
-                        System.out.println("ageGroup错误，读取到ageGroup为" + value);
+                        System.out.println("ageGroup错误，读取到ageGroup为: " + value);
                 }
             }
         }
@@ -241,4 +241,98 @@ public class TableUtil {
 
         return output;
     }
+
+    public static List<JSONObject> getPoliticalStatus() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int crowd = 0;
+        int party = 0;
+        int nonParty = 0;
+
+        for (Result result : qualifierFilter(user_profile, "political_status")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "群众":
+                        crowd++;
+                        break;
+                    case "党员":
+                        party++;
+                        break;
+                    case "无党派人士":
+                        nonParty++;
+                        break;
+                    default:
+                        System.out.println("political_status错误，读取到political_status: " + value);
+                }
+            }
+        }
+        map.put("群众", crowd);
+        map.put("党员", party);
+        map.put("无党派人士", nonParty);
+
+        for (String s : Arrays.asList("群众", "党员", "无党派人士")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", s);
+            jsonObject.put("value", map.get(s));
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
+    public static List<JSONObject> getJob() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int student = 0;
+        int publicServant = 0;
+        int soldier = 0;
+        int policemen = 0;
+        int teacher = 0;
+        int whiteCollar = 0;
+
+        for (Result result : qualifierFilter(user_profile, "job")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "学生":
+                        student++;
+                        break;
+                    case "公务员":
+                        publicServant++;
+                        break;
+                    case "军人":
+                        soldier++;
+                        break;
+                    case "警察":
+                        policemen++;
+                        break;
+                    case "教师":
+                        teacher++;
+                        break;
+                    case "白领":
+                        whiteCollar++;
+                        break;
+                    default:
+                        System.out.println("job错误，读取到job为: " + value);
+                }
+            }
+        }
+        map.put("学生", student);
+        map.put("公务员", publicServant);
+        map.put("军人", soldier);
+        map.put("警察", policemen);
+        map.put("教师", teacher);
+        map.put("白领", whiteCollar);
+
+        for (String s : Arrays.asList("学生", "公务员", "军人", "警察", "教师", "白领")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
 }
