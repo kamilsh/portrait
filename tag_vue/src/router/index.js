@@ -6,7 +6,6 @@ import Home from '../components/common/Home'
 import Personal from '../components/basic/Personal'
 import Business from '../components/basic/Business'
 import Action from '../components/basic/Action'
-import Value from '../components/basic/Value'
 import Portrait from '../components/portrait/Portrait'
 import Tree from '../components/basic/Tree'
 import Gender from '../components/basic/charts/Gender'
@@ -16,6 +15,11 @@ import Job from '../components/basic/charts/Job'
 import MaritalStatus from '../components/basic/charts/MaritalStatus'
 import Constellation from '../components/basic/charts/Constellation'
 import Nationality from '../components/basic/charts/Nationality'
+import Combination from '../components/combination/Combination'
+import ConsumeCycle from '../components/basic/charts/ConsumeCycle'
+import AvgOrderAmount from '../components/basic/charts/AvgOrderAmount'
+import PaymentCode from '../components/basic/charts/PaymentCode'
+import MaxOrderAmount from '../components/basic/charts/MaxOrderAmount'
 
 Vue.use(Router)
 
@@ -90,17 +94,34 @@ export default new Router({
             {
               path: '/home/basic/business',
               name: 'business',
-              component: Business
+              component: Business,
+              children: [
+                {
+                  path: '/home/basic/business/consumeCycle',
+                  name: 'consumeCycle',
+                  component: ConsumeCycle
+                },
+                {
+                  path: '/home/basic/business/avgOrderAmount',
+                  name: 'avgOrderAmount',
+                  component: AvgOrderAmount
+                },
+                {
+                  path: '/home/basic/business/paymentCode',
+                  name: 'paymentCode',
+                  component: PaymentCode
+                },
+                {
+                  path: '/home/basic/business/maxOrderAmount',
+                  name: 'maxOrderAmount',
+                  component: MaxOrderAmount
+                }
+              ]
             },
             {
               path: '/home/basic/action',
               name: 'action',
               component: Action
-            },
-            {
-              path: '/home/basic/value',
-              name: 'value',
-              component: Value
             }
           ]
         },
@@ -113,13 +134,18 @@ export default new Router({
           path: '/home/tree',
           name: 'tree',
           component: Tree
+        },
+        {
+          path: '/home/combination',
+          name: 'combination',
+          component: Combination
         }
       ]
     },
     {
       path: '/test',
       name: 'test',
-      component: PoliticalStatus
+      component: Combination
     }
   ]
 })

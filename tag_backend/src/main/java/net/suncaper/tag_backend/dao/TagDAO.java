@@ -8,4 +8,5 @@ import java.util.List;
 public interface TagDAO extends JpaRepository<Tag, Integer> {
     List<Object[]> getAllByPid(int pid);
     List<Tag> findAllByPid(int pid);
+    Tag getTagById(int id);
 }

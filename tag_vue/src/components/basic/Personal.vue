@@ -1,7 +1,6 @@
 <template>
   <div>
   <el-table
-    v-show="true"
     :data="tableData"
     border
     style="width: 100%">
@@ -37,97 +36,97 @@ export default {
   name: 'Personal',
   data () {
     return {
-      tableData: [
-        {
-          'id': 8,
-          'name': '性别',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册会员的性别',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': 'gender'
-        },
-        {
-          'id': 9,
-          'name': '年龄段',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的生日所属年龄段',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': 'AgeGroup'
-        },
-        {
-          'id': 11,
-          'name': '民族',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的民族',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': 'nation'
-        },
-        {
-          'id': 13,
-          'name': '政治面貌',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的政治面貌',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': 'political_status'
-        },
-        {
-          'id': 14,
-          'name': '职业',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的职业',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': 'job'
-        },
-        {
-          'id': 15,
-          'name': '婚姻状况',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的婚姻状况',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': 'marriage'
-        },
-        {
-          'id': 18,
-          'name': '星座',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的星座',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': null
-        },
-        {
-          'id': 20,
-          'name': '国籍',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户所属的国籍：中国大陆、中国香港、中国澳门、中国台湾、其他',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': 'nationality'
-        }
-      ]
-      // tableData: []
+      // tableData: [
+      //   {
+      //     'id': 8,
+      //     'name': '性别',
+      //     'industry': '标签',
+      //     'rule': null,
+      //     'business': '注册会员的性别',
+      //     'level': 4,
+      //     'pid': 3,
+      //     'state': 4,
+      //     'remark': 'gender'
+      //   },
+      //   {
+      //     'id': 9,
+      //     'name': '年龄段',
+      //     'industry': '标签',
+      //     'rule': null,
+      //     'business': '注册用户的生日所属年龄段',
+      //     'level': 4,
+      //     'pid': 3,
+      //     'state': 4,
+      //     'remark': 'AgeGroup'
+      //   },
+      //   {
+      //     'id': 11,
+      //     'name': '民族',
+      //     'industry': '标签',
+      //     'rule': null,
+      //     'business': '注册用户的民族',
+      //     'level': 4,
+      //     'pid': 3,
+      //     'state': 4,
+      //     'remark': 'nation'
+      //   },
+      //   {
+      //     'id': 13,
+      //     'name': '政治面貌',
+      //     'industry': '标签',
+      //     'rule': null,
+      //     'business': '注册用户的政治面貌',
+      //     'level': 4,
+      //     'pid': 3,
+      //     'state': 4,
+      //     'remark': 'political_status'
+      //   },
+      //   {
+      //     'id': 14,
+      //     'name': '职业',
+      //     'industry': '标签',
+      //     'rule': null,
+      //     'business': '注册用户的职业',
+      //     'level': 4,
+      //     'pid': 3,
+      //     'state': 4,
+      //     'remark': 'job'
+      //   },
+      //   {
+      //     'id': 15,
+      //     'name': '婚姻状况',
+      //     'industry': '标签',
+      //     'rule': null,
+      //     'business': '注册用户的婚姻状况',
+      //     'level': 4,
+      //     'pid': 3,
+      //     'state': 4,
+      //     'remark': 'marriage'
+      //   },
+      //   {
+      //     'id': 18,
+      //     'name': '星座',
+      //     'industry': '标签',
+      //     'rule': null,
+      //     'business': '注册用户的星座',
+      //     'level': 4,
+      //     'pid': 3,
+      //     'state': 4,
+      //     'remark': null
+      //   },
+      //   {
+      //     'id': 20,
+      //     'name': '国籍',
+      //     'industry': '标签',
+      //     'rule': null,
+      //     'business': '注册用户所属的国籍：中国大陆、中国香港、中国澳门、中国台湾、其他',
+      //     'level': 4,
+      //     'pid': 3,
+      //     'state': 4,
+      //     'remark': 'nationality'
+      //   }
+      // ]
+      tableData: []
     }
   },
   methods: {

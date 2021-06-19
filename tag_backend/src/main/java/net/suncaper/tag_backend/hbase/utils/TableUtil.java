@@ -6,9 +6,7 @@ import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.CompareOperator;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
-import org.apache.hadoop.hbase.filter.Filter;
-import org.apache.hadoop.hbase.filter.QualifierFilter;
-import org.apache.hadoop.hbase.filter.SubstringComparator;
+import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
@@ -92,6 +90,7 @@ public class TableUtil {
                 }
             }
         }
+        table.close();
         conn.close();
         System.out.println(output);
         return output;
@@ -137,6 +136,8 @@ public class TableUtil {
         jsonObject.put("children", familyList);
         jsonObject.put("name", String.format("rowkey: %s", rowkey));
         rowkeyList.add(jsonObject);
+        table.close();
+        conn.close();
         return rowkeyList;
     }
 
@@ -503,6 +504,198 @@ public class TableUtil {
             jsonObject.put("name", s);
             output.add(jsonObject);
         }
+
+        return output;
+    }
+
+    public static List<JSONObject> getPaymentCode() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int alipay = 0;
+        int wechat = 0;
+        int deposit = 0;
+        int credit = 0;
+
+        for (Result result : qualifierFilter(user_profile, "paymentCode")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "alipay":
+                        alipay++;
+                        break;
+                    case "wxpay":
+                        wechat++;
+                        break;
+                    case "储蓄卡":
+                        deposit++;
+                        break;
+                    case "cod":
+                        credit++;
+                        break;
+                    default:
+                        System.out.println("paymentCode 错误，读取到 paymentCode 为: " + value);
+                }
+            }
+        }
+        map.put("支付宝", alipay);
+        map.put("微信", wechat);
+        map.put("储蓄卡", deposit);
+        map.put("信用卡", credit);
+
+        for (String s : Arrays.asList("支付宝", "微信", "储蓄卡", "信用卡")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
+    public static List<JSONObject> getConsumeCycle() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int day7 = 0;
+        int week2 = 0;
+        int month1 = 0;
+        int month2 = 0;
+        int month3 = 0;
+        int month4 = 0;
+        int month5 = 0;
+        int month6 = 0;
+        int other = 0;
+
+        for (Result result : qualifierFilter(user_profile, "consume_cycle")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "7日":
+                        day7++;
+                        break;
+                    case "2周":
+                        week2++;
+                        break;
+                    case "1月":
+                        month1++;
+                        break;
+                    case "2月":
+                        month2++;
+                        break;
+                    case "3月":
+                        month3++;
+                        break;
+                    case "4月":
+                        month4++;
+                        break;
+                    case "5月":
+                        month5++;
+                        break;
+                    case "6月":
+                        month6++;
+                        break;
+                    case "其他":
+                        other++;
+                        break;
+                    default:
+                        System.out.println("consume_cycle 错误，读取到 consume_cycle 为: " + value);
+                }
+            }
+        }
+        map.put("7日", day7);
+        map.put("2周", week2);
+        map.put("1月", month1);
+        map.put("2月", month2);
+        map.put("3月", month3);
+        map.put("4月", month4);
+        map.put("5月", month5);
+        map.put("6月", month6);
+        map.put("其他", other);
+
+        for (String s : Arrays.asList("7日", "2周", "1月", "2月", "3月", "4月", "5月", "6月", "其他")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
+    public static List<List<Double>> getAvgOrderAmount() throws IOException {
+        List<List<Double>> output = new ArrayList<>();
+
+        for (Result result : qualifierFilter(user_profile, "avg_order_amount")) {
+            for (Cell cell : result.rawCells()) {
+                List<Double> doubleList = new ArrayList<>();
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                String rowkey = Bytes.toString(CellUtil.cloneRow(cell));
+                doubleList.add(Double.parseDouble(rowkey));
+                doubleList.add(Double.parseDouble(value));
+                output.add(doubleList);
+            }
+        }
+
+        return output;
+    }
+
+    public static List<List<Double>> getMaxOrderAmount() throws IOException {
+        List<List<Double>> output = new ArrayList<>();
+
+        for (Result result : qualifierFilter(user_profile, "max_order_amount")) {
+            for (Cell cell : result.rawCells()) {
+                List<Double> doubleList = new ArrayList<>();
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                String rowkey = Bytes.toString(CellUtil.cloneRow(cell));
+                doubleList.add(Double.parseDouble(rowkey));
+                doubleList.add(Double.parseDouble(value));
+                output.add(doubleList);
+            }
+        }
+
+        return output;
+    }
+
+    // 多条件列值查询
+    public static List<JSONObject> filterList(List<String> remarks, List<String> names) throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+
+        Connection conn = ConnectionUtil.getConn();
+        Table table = getTable(conn, user_profile, null);
+        Scan scan = new Scan();
+
+        FilterList filterList = new FilterList();
+
+        int length = remarks.size();
+        for (int i = 0; i < length; i++) {
+            SingleColumnValueFilter singleColumnValueFilter = new SingleColumnValueFilter("cf".getBytes(),
+                    remarks.get(i).getBytes(), CompareOperator.EQUAL, names.get(i).getBytes());
+            singleColumnValueFilter.setFilterIfMissing(true);
+            filterList.addFilter(singleColumnValueFilter);
+        }
+
+        scan.setFilter(filterList);
+        ResultScanner scanner = table.getScanner(scan);
+
+        for (Result result : scanner) {
+            String rowkey = Bytes.toString(result.getRow());
+            List<JSONObject> jsonObjectList = new ArrayList<>();
+            for (Cell cell : result.rawCells()) {
+                String qualifier = Bytes.toString(CellUtil.cloneQualifier(cell));
+                if ("purchase_goods".equals(qualifier) || "browse_products".equals(qualifier)) continue;
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                String[] strings = value.split(",");
+                for (String s : strings) {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put(qualifier, s);
+                    jsonObjectList.add(jsonObject);
+                }
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("rowkey: " + rowkey, jsonObjectList);
+            output.add(jsonObject);
+        }
+        table.close();
+        conn.close();
 
         return output;
     }

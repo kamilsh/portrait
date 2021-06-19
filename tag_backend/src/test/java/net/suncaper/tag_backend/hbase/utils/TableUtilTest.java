@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 class TableUtilTest {
@@ -71,5 +72,20 @@ class TableUtilTest {
     @Test
     void getJob() throws IOException {
         System.out.println(TableUtil.getJob());
+    }
+
+    @Test
+    void filterList() throws IOException {
+        System.out.println(TableUtil.filterList(Arrays.asList("gender", "job"), Arrays.asList("男", "学生")));
+    }
+
+    @Test
+    void getConsumeCycle() throws IOException {
+        System.out.println(TableUtil.getConsumeCycle());
+    }
+
+    @Test
+    void getAvgOrderAmount() throws IOException {
+        System.out.println(TableUtil.getAvgOrderAmount());
     }
 }
