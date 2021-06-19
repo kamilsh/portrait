@@ -13,6 +13,9 @@ import Gender from '../components/basic/charts/Gender'
 import AgeGroup from '../components/basic/charts/AgeGroup'
 import PoliticalStatus from '../components/basic/charts/PoliticalStatus'
 import Job from '../components/basic/charts/Job'
+import MaritalStatus from '../components/basic/charts/MaritalStatus'
+import Constellation from '../components/basic/charts/Constellation'
+import Nationality from '../components/basic/charts/Nationality'
 
 Vue.use(Router)
 
@@ -66,6 +69,21 @@ export default new Router({
                   path: '/home/basic/personal/job',
                   name: 'Job',
                   component: Job
+                },
+                {
+                  path: '/home/basic/personal/maritalStatus',
+                  name: 'maritalStatus',
+                  component: MaritalStatus
+                },
+                {
+                  path: '/home/basic/personal/constellation',
+                  name: 'Constellation',
+                  component: Constellation
+                },
+                {
+                  path: '/home/basic/personal/nationality',
+                  name: 'nationality',
+                  component: Nationality
                 }
               ]
             },

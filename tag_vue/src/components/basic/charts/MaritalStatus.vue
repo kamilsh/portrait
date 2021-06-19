@@ -1,10 +1,10 @@
 <template>
-  <div id="political_status" :data="data" style="width: 65vw;height: 65vh;"></div>
+  <div id="marital_status" :data="data" style="width: 65vw;height: 65vh;"></div>
 </template>
 
 <script>
 export default {
-  name: 'PoliticalStatus',
+  name: 'MaritalStatus',
   data () {
     return {
       data: []
@@ -12,32 +12,36 @@ export default {
   },
   methods: {
     initChart () {
-      this.chart = this.$echarts.init(document.getElementById('political_status'))
+      this.chart = this.$echarts.init(document.getElementById('marital_status'))
       const option = {
-        title: {
-          text: '政治面貌分布',
-          left: 'center'
-        },
         tooltip: {
           trigger: 'item'
         },
         legend: {
-          orient: 'vertical',
-          left: 'left'
+          top: '5%',
+          left: 'center'
         },
         series: [
           {
-            name: '政治面貌分布',
+            name: '婚姻状况分布',
             type: 'pie',
-            radius: '50%',
-            data: this.data,
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
             emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              label: {
+                show: true,
+                fontSize: '40',
+                fontWeight: 'bold'
               }
-            }
+            },
+            labelLine: {
+              show: false
+            },
+            data: this.data
           }
         ]
       }
@@ -45,7 +49,7 @@ export default {
       window.onresize = this.chart.resize
     },
     loadData () {
-      this.$axios.get('/personal/politicalStatus').then(resp => {
+      this.$axios.get('/personal/maritalStatus').then(resp => {
         if (resp.data.code === 200) {
           this.data = resp.data.data
           // console.log(this.ageData)

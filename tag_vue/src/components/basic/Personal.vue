@@ -72,17 +72,6 @@ export default {
           'remark': 'nation'
         },
         {
-          'id': 12,
-          'name': '籍贯',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的籍贯',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': null
-        },
-        {
           'id': 13,
           'name': '政治面貌',
           'industry': '标签',
@@ -116,44 +105,11 @@ export default {
           'remark': 'marriage'
         },
         {
-          'id': 16,
-          'name': '学历',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的学历',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': null
-        },
-        {
-          'id': 17,
-          'name': '就业状况',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户的就业状况',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': null
-        },
-        {
           'id': 18,
           'name': '星座',
           'industry': '标签',
           'rule': null,
           'business': '注册用户的星座',
-          'level': 4,
-          'pid': 3,
-          'state': 4,
-          'remark': null
-        },
-        {
-          'id': 19,
-          'name': '所在商圈',
-          'industry': '标签',
-          'rule': null,
-          'business': '注册用户所属的商圈',
           'level': 4,
           'pid': 3,
           'state': 4,
@@ -193,6 +149,16 @@ export default {
         case '职业':
           console.log('route->job')
           this.$router.push('/home/basic/personal/job')
+          break
+        case '婚姻状况':
+          console.log('route->maritalStatus')
+          this.$router.push('/home/basic/personal/maritalStatus')
+          break
+        case '星座':
+          this.$router.push('/home/basic/personal/constellation')
+          break
+        case '国籍':
+          this.$router.push('/home/basic/personal/nationality')
           break
       }
     },

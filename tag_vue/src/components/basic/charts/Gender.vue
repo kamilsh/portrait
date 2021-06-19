@@ -24,39 +24,59 @@ export default {
     initChart () {
       this.chart = this.$echarts.init(document.getElementById('gender_pie'))
       const option = {
+        // backgroundColor: '#FFEBCD',
+
+        title: {
+          text: '性别分布',
+          left: 'center',
+          top: 20,
+          textStyle: {
+            color: '#1E90FF'
+          }
+        },
+
         tooltip: {
           trigger: 'item'
         },
-        legend: {
-          top: '5%',
-          left: 'center'
+
+        visualMap: {
+          show: false,
+          min: 80,
+          max: 600,
+          inRange: {
+            colorLightness: [0, 1]
+          }
         },
         series: [
           {
             name: '性别分布',
             type: 'pie',
-            radius: ['40%', '70%'],
-            avoidLabelOverlap: false,
-            itemStyle: {
-              borderRadius: 10,
-              borderColor: '#fff',
-              borderWidth: 2
-            },
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: this.genderData.sort(function (a, b) { return a.value - b.value }),
+            roseType: 'radius',
             label: {
-              show: false,
-              position: 'center'
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: '40',
-                fontWeight: 'bold'
-              }
+              color: 'rgba(175, 238, 238, 0.3)'
             },
             labelLine: {
-              show: false
+              lineStyle: {
+                color: 'rgba(255, 255, 255, 0.3)'
+              },
+              smooth: 0.2,
+              length: 10,
+              length2: 20
             },
-            data: this.genderData
+            itemStyle: {
+              color: '#c23531',
+              shadowBlur: 200,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+              return Math.random() * 200
+            }
           }
         ]
       }

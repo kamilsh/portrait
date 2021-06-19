@@ -335,4 +335,175 @@ public class TableUtil {
         return output;
     }
 
+    public static List<JSONObject> getMaritalStatus() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int unmarried = 0;
+        int married = 0;
+        int divorced = 0;
+
+        for (Result result : qualifierFilter(user_profile, "marital_status")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "未婚":
+                        unmarried++;
+                        break;
+                    case "已婚":
+                        married++;
+                        break;
+                    case "离异":
+                        divorced++;
+                        break;
+                    default:
+                        System.out.println("marital_status错误，读取到marital_status: " + value);
+                }
+            }
+        }
+        map.put("未婚", unmarried);
+        map.put("已婚", married);
+        map.put("离异", divorced);
+
+        for (String s : Arrays.asList("未婚", "已婚", "离异")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", s);
+            jsonObject.put("value", map.get(s));
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
+    public static List<JSONObject> getConstellation() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int 魔羯座 = 0;
+        int 水瓶座 = 0;
+        int 双鱼座 = 0;
+        int 白羊座 = 0;
+        int 金牛座 = 0;
+        int 双子座 = 0;
+        int 巨蟹座 = 0;
+        int 狮子座 = 0;
+        int 处女座 = 0;
+        int 天秤座 = 0;
+        int 天蝎座 = 0;
+        int 射手座 = 0;
+
+        for (Result result : qualifierFilter(user_profile, "constellation")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "魔羯座":
+                        魔羯座++;
+                        break;
+                    case "水瓶座":
+                        水瓶座++;
+                        break;
+                    case "双鱼座":
+                        双鱼座++;
+                        break;
+                    case "白羊座":
+                        白羊座++;
+                        break;
+                    case "金牛座":
+                        金牛座++;
+                        break;
+                    case "双子座":
+                        双子座++;
+                        break;
+                    case "巨蟹座":
+                        巨蟹座++;
+                        break;
+                    case "狮子座":
+                        狮子座++;
+                        break;
+                    case "处女座":
+                        处女座++;
+                        break;
+                    case "天秤座":
+                        天秤座++;
+                        break;
+                    case "天蝎座":
+                        天蝎座++;
+                        break;
+                    case "射手座":
+                        射手座++;
+                        break;
+                    default:
+                        System.out.println("constellation 错误，读取到 constellation 为: " + value);
+                }
+            }
+        }
+        map.put("魔羯座", 魔羯座);
+        map.put("水瓶座", 水瓶座);
+        map.put("双鱼座", 双鱼座);
+        map.put("白羊座", 白羊座);
+        map.put("金牛座", 金牛座);
+        map.put("双子座", 双子座);
+        map.put("巨蟹座", 巨蟹座);
+        map.put("狮子座", 狮子座);
+        map.put("处女座", 处女座);
+        map.put("天秤座", 天秤座);
+        map.put("天蝎座", 天蝎座);
+        map.put("射手座", 射手座);
+
+        for (String s : Arrays.asList("魔羯座", "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
+    public static List<JSONObject> getNationality() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int mainland = 0;
+        int hongkong = 0;
+        int macao = 0;
+        int taiwan = 0;
+        int other = 0;
+
+        for (Result result : qualifierFilter(user_profile, "nationality")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "中国大陆":
+                        mainland++;
+                        break;
+                    case "中国香港":
+                        hongkong++;
+                        break;
+                    case "中国澳门":
+                        macao++;
+                        break;
+                    case "中国台湾":
+                        taiwan++;
+                        break;
+                    case "其他":
+                        other++;
+                        break;
+                    default:
+                        System.out.println("nationality 错误，读取到 nationality 为: " + value);
+                }
+            }
+        }
+        map.put("中国大陆", mainland);
+        map.put("中国香港", hongkong);
+        map.put("中国澳门", macao);
+        map.put("中国台湾", taiwan);
+        map.put("其他", other);
+
+        for (String s : Arrays.asList("中国大陆", "中国香港", "中国澳门", "中国台湾", "其他")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
 }

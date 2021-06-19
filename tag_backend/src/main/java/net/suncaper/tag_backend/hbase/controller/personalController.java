@@ -39,4 +39,25 @@ public class personalController {
         return ResultFactory.buildSuccessResult(TableUtil.getJob());
     }
 
+    @CrossOrigin
+    @GetMapping("/api/personal/maritalStatus")
+    public Result getMaritalStatus() throws IOException {
+        System.out.println("/api/personal/maritalStatus");
+        return ResultFactory.buildSuccessResult(TableUtil.getMaritalStatus());
+    }
+
+    @CrossOrigin
+    @GetMapping("/api/personal/constellation")
+    public Result getConstellation() throws IOException {
+        System.out.println("/api/personal/constellation");
+        return ResultFactory.buildSuccessResult(TableUtil.getConstellation());
+    }
+
+    @CrossOrigin
+    @GetMapping("/api/personal/nationality")
+    public Result getNationality() throws IOException {
+        System.out.println("/api/personal/nationality");
+        return ResultFactory.buildSuccessResult(TableUtil.getNationality());
+    }
+
 }
