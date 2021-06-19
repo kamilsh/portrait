@@ -24,15 +24,15 @@ object GenderModel {
          |  }
          |}""".stripMargin
 
-//    val source = spark.read
-//      .option(HBaseTableCatalog.tableCatalog , catalog)
-//      .format("org.apache.spark.sql.execution.datasources.hbase")
-//      .load()
-//    source.show(10,false)
-  val readDF: DataFrame = spark.read
-  .option(HBaseTableCatalog.tableCatalog, catalog)
-  .format("org.apache.spark.sql.execution.datasources.hbase")
-  .load()
+    //    val source = spark.read
+    //      .option(HBaseTableCatalog.tableCatalog , catalog)
+    //      .format("org.apache.spark.sql.execution.datasources.hbase")
+    //      .load()
+    //    source.show(10,false)
+    val readDF: DataFrame = spark.read
+      .option(HBaseTableCatalog.tableCatalog, catalog)
+      .format("org.apache.spark.sql.execution.datasources.hbase")
+      .load()
 
     val result = readDF.select('id,
       when('gender === "1", "男")

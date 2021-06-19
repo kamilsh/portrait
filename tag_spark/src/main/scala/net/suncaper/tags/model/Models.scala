@@ -7,10 +7,11 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 
 
 object Models {
-  val spark:SparkSession = SparkSession.builder()
+  val spark: SparkSession = SparkSession.builder()
     .appName("shc test")
     .master("local")
     .getOrCreate()
+
   def log_order =
     s"""{
        |  "table":{"namespace":"default", "name":"tbl_orders"},
@@ -21,6 +22,7 @@ object Models {
        |    "finishTime":{"cf":"cf", "col":"finishTime", "type":"string"}
        |  }
        |}""".stripMargin
+
   def log_order_2 =
     s"""{
        |  "table":{"namespace":"default", "name":"tbl_orders"},
@@ -32,6 +34,7 @@ object Models {
        |    "finishTime":{"cf":"cf", "col":"finishTime", "type":"string"}
        |  }
        |}""".stripMargin
+
   def log_user =
     s"""{
        |  "table":{"namespace":"default", "name":"tbl_users"},
@@ -40,6 +43,7 @@ object Models {
        |    "id":{"cf":"rowkey", "col":"id", "type":"string"}
        |  }
        |}""".stripMargin
+
   def log_user_2 =
     s"""{
        |  "table":{"namespace":"default", "name":"tbl_users"},
@@ -49,18 +53,20 @@ object Models {
        |    "birthday":{"cf":"cf","col":"birthday","type":"string"}
        |  }
        |}""".stripMargin
-  def log_log_1=
+
+  def log_log_1 =
     s"""
-      |{
-      |  "table":{"namespace":"default", "name":"tbl_logs"},
-      |  "rowkey":"id",
-      |  "columns":{
-      |    "id":{"cf":"rowkey", "col":"id", "type":"string"},
-      |    "global_user_id":{"cf":"cf","col":"global_user_id","type":"string"},
-      |    "url":{"cf":"cf","col":"loc_url","type":"string"}
-      |  }
-      |}""".stripMargin
-  def log_log_2=
+       |{
+       |  "table":{"namespace":"default", "name":"tbl_logs"},
+       |  "rowkey":"id",
+       |  "columns":{
+       |    "id":{"cf":"rowkey", "col":"id", "type":"string"},
+       |    "global_user_id":{"cf":"cf","col":"global_user_id","type":"string"},
+       |    "url":{"cf":"cf","col":"loc_url","type":"string"}
+       |  }
+       |}""".stripMargin
+
+  def log_log_2 =
     s"""
        |{
        |  "table":{"namespace":"default", "name":"tbl_logs"},
@@ -112,23 +118,23 @@ object Models {
     .format("org.apache.spark.sql.execution.datasources.hbase")
     .load()
   //  source_order.createOrReplaceTempView("source_order")
-    source_user.createOrReplaceTempView("source_user")
+  source_user.createOrReplaceTempView("source_user")
   source_user_2.createOrReplaceTempView("source_user_2")
   source_log_1.createOrReplaceTempView("source_log_1")
   source_log_2.createOrReplaceTempView("source_log_2")
   source_log_3.createOrReplaceTempView("source_log_3")
   source_order_2.createOrReplaceTempView("source_order_2")
 
-  def main(args: Array[String]): Unit={
+  def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
 
     ViewPages()
-   // DeviceType()
-   // Constellation()
-  //  ViewFrequency()
-   // ViewInterval()
-   // MaxOrderAmount()
-   // AvgOrderAmount()
+    // DeviceType()
+    // Constellation()
+    //  ViewFrequency()
+    // ViewInterval()
+    // MaxOrderAmount()
+    // AvgOrderAmount()
   }
 
   /*
@@ -137,7 +143,7 @@ object Models {
 +---+--------------------------------------------------------+
 |296|其它:222,登录页:6,订单页:22,商品页:47,分类页:17,主页:66 |
   * */
-  def ViewPages()={
+  def ViewPages() = {
     val df_ = spark.sql(
       """
         |select
@@ -154,10 +160,10 @@ object Models {
         |on source_user.id = source_log_1.global_user_id
         |
       """.stripMargin)
-    df_.show(40,false)
-    val df_2 = df_.groupBy("id","view_page")
+    df_.show(40, false)
+    val df_2 = df_.groupBy("id", "view_page")
       .agg(count("view_page") as "count_page")
-      .select("id","view_page","count_page")
+      .select("id", "view_page", "count_page")
     df_2.createOrReplaceTempView("df_2")
 
     val df_3 = spark.sql(
@@ -181,14 +187,15 @@ object Models {
         |   from df_3) tmp
         |group by id
       """.stripMargin)
-//    val result = spark.sql(
-//      """
-//        |select
-//        |   id,concat_ws(',',collect_set(count_page)) as view_page
-//        |from df_2
-//        |group by id
-//      """.stripMargin)
-    result.show(40,false)
+    //    val result = spark.sql(
+    //      """
+    //        |select
+    //        |   id,concat_ws(',',collect_set(count_page)) as view_page
+    //        |from df_2
+    //        |group by id
+    //      """.stripMargin)
+    result.show(40, false)
+
     def catalogWrite =
       s"""{
          |"table":{"namespace":"default", "name":"user_profile"},
@@ -212,7 +219,7 @@ object Models {
 +---+--------------------+
 |829|iOS:49,Linux:3,Ma...|
  */
-  def DeviceType()={
+  def DeviceType() = {
     val df_ = spark.sql(
       """
         |select
@@ -229,11 +236,11 @@ object Models {
         |on source_user.id = source_log_2.global_user_id
         |
       """.stripMargin)
-    df_.show(5,false)
-    val df_2 = df_.groupBy("id","device_type")
+    df_.show(5, false)
+    val df_2 = df_.groupBy("id", "device_type")
       .agg(count("device_type") as "count_type")
-      .select("id","device_type","count_type")
-      .orderBy("id","device_type")
+      .select("id", "device_type", "count_type")
+      .orderBy("id", "device_type")
     df_2.show(40)
     df_2.createOrReplaceTempView("df_2")
 
@@ -261,14 +268,15 @@ object Models {
       """.stripMargin)
 
     result.show(40)
-//    val result = spark.sql(
-//      """
-//        |select
-//        |   id,concat_ws(',',collect_set(count_type)) as device_type
-//        |from df_2
-//        |group by id
-//      """.stripMargin)
-//    result.show(40,false)
+
+    //    val result = spark.sql(
+    //      """
+    //        |select
+    //        |   id,concat_ws(',',collect_set(count_type)) as device_type
+    //        |from df_2
+    //        |group by id
+    //      """.stripMargin)
+    //    result.show(40,false)
     def catalogWrite =
       s"""{
          |"table":{"namespace":"default", "name":"user_profile"},
@@ -292,7 +300,7 @@ object Models {
 +---+-------------+
 |1  |双子座       |
    */
-  def Constellation()={
+  def Constellation() = {
     val df_ = spark.sql(
       """
         |select id,dayofyear(birthday) as dayofyear
@@ -319,7 +327,8 @@ object Models {
         |   else "魔羯座" end) as constellation
         |from df_
       """.stripMargin)
-    result.show(20,false)
+    result.show(20, false)
+
     def catalogWrite =
       s"""{
          |"table":{"namespace":"default", "name":"user_profile"},
@@ -345,49 +354,49 @@ object Models {
 |829|4             |
 0:从不,1:很少,2:偶尔,3:经常,4:频繁
    */
-def ViewFrequency()={
-  //2019-07-01 ~ 2019-08-01
-  val df_ = spark.sql(
-    """
-      |select global_user_id as id,count(log_time) as count
-      |from source_log_3
-      |where year(log_time)=2019 and dayofyear(log_time)>180 and dayofyear(log_time)<210
-      |group by global_user_id
+  def ViewFrequency() = {
+    //2019-07-01 ~ 2019-08-01
+    val df_ = spark.sql(
+      """
+        |select global_user_id as id,count(log_time) as count
+        |from source_log_3
+        |where year(log_time)=2019 and dayofyear(log_time)>180 and dayofyear(log_time)<210
+        |group by global_user_id
     """.stripMargin)
-  df_.createOrReplaceTempView("df_")
-  val result = spark.sql(
-    """
-      |select id ,
-      |(case
-      | when count=0 then '从不'
-      | when count<50 then '很少'
-      | when count<100 then '偶尔'
-      | when count<150 then '经常'
-      | else '频繁' end) as view_frequency
-      |from df_
+    df_.createOrReplaceTempView("df_")
+    val result = spark.sql(
+      """
+        |select id ,
+        |(case
+        | when count=0 then '从不'
+        | when count<50 then '很少'
+        | when count<100 then '偶尔'
+        | when count<150 then '经常'
+        | else '频繁' end) as view_frequency
+        |from df_
     """.stripMargin)
 
-  result.show(30,false)
-  import spark.implicits._
-  val result_2 = result.select($"id",$"view_frequency".cast("string"))
+    result.show(30, false)
+    import spark.implicits._
+    val result_2 = result.select($"id", $"view_frequency".cast("string"))
 
-  def catalogWrite =
-    s"""{
-       |"table":{"namespace":"default", "name":"user_profile"},
-       |"rowkey":"id",
-       |"columns":{
-       |  "id":{"cf":"rowkey", "col":"id", "type":"string"},
-       |  "view_frequency":{"cf":"cf", "col":"view_frequency", "type":"string"}
-       |}
-       |}""".stripMargin
+    def catalogWrite =
+      s"""{
+         |"table":{"namespace":"default", "name":"user_profile"},
+         |"rowkey":"id",
+         |"columns":{
+         |  "id":{"cf":"rowkey", "col":"id", "type":"string"},
+         |  "view_frequency":{"cf":"cf", "col":"view_frequency", "type":"string"}
+         |}
+         |}""".stripMargin
 
 
-  result_2.write
-    .option(HBaseTableCatalog.tableCatalog, catalogWrite)
-    .option(HBaseTableCatalog.newTable, "5")
-    .format("org.apache.spark.sql.execution.datasources.hbase")
-    .save()
-}
+    result_2.write
+      .option(HBaseTableCatalog.tableCatalog, catalogWrite)
+      .option(HBaseTableCatalog.newTable, "5")
+      .format("org.apache.spark.sql.execution.datasources.hbase")
+      .save()
+  }
 
   /*
 +---+-------------+
@@ -400,72 +409,73 @@ def ViewFrequency()={
 4:18点-21点
 5:22点-24点
    */
-def ViewInterval()={
-  //2019-07-01 ~ 2019-08-01
-  val df_ = spark.sql(
-    """
-      |select global_user_id as id,hour(log_time) as log_hour
-      |from source_log_3
-      |where year(log_time)=2019 and dayofyear(log_time)>180 and dayofyear(log_time)<210
+  def ViewInterval() = {
+    //2019-07-01 ~ 2019-08-01
+    val df_ = spark.sql(
+      """
+        |select global_user_id as id,hour(log_time) as log_hour
+        |from source_log_3
+        |where year(log_time)=2019 and dayofyear(log_time)>180 and dayofyear(log_time)<210
     """.stripMargin)
-  df_.createOrReplaceTempView("df_")
+    df_.createOrReplaceTempView("df_")
 
-  val df_2 = spark.sql(
-    """
-      |select id ,
-      |(case
-      | when log_hour<8 then '1:00-7:00'
-      | when log_hour<13 then '8:00-12:00'
-      | when log_hour<18 then '13:00-17:00'
-      | when log_hour<22 then '18:00-21:00'
-      | else '22:00-24:00' end) as view_interval
-      |from df_
+    val df_2 = spark.sql(
+      """
+        |select id ,
+        |(case
+        | when log_hour<8 then '1:00-7:00'
+        | when log_hour<13 then '8:00-12:00'
+        | when log_hour<18 then '13:00-17:00'
+        | when log_hour<22 then '18:00-21:00'
+        | else '22:00-24:00' end) as view_interval
+        |from df_
     """.stripMargin)
-  df_2.createOrReplaceTempView("df_2")
+    df_2.createOrReplaceTempView("df_2")
 
-  val df_3 = spark.sql(
-    """
-      |select id,view_interval, count(view_interval) as c
-      | from df_2
-      | group by id, view_interval
+    val df_3 = spark.sql(
+      """
+        |select id,view_interval, count(view_interval) as c
+        | from df_2
+        | group by id, view_interval
     """.stripMargin)
-  df_3.createOrReplaceTempView("df_3")
+    df_3.createOrReplaceTempView("df_3")
 
-  val df_4 = spark.sql(
-    """
-      |select id,max(c) as m
-      |from df_3
-      |group by id
+    val df_4 = spark.sql(
+      """
+        |select id,max(c) as m
+        |from df_3
+        |group by id
     """.stripMargin)
-  df_4.createOrReplaceTempView("df_4")
+    df_4.createOrReplaceTempView("df_4")
 
-  val result = spark.sql(
-    """
-      |select df_3.id,view_interval
-      |from df_3 join df_4
-      |on df_3.id=df_4.id and df_3.c =df_4.m
+    val result = spark.sql(
+      """
+        |select df_3.id,view_interval
+        |from df_3 join df_4
+        |on df_3.id=df_4.id and df_3.c =df_4.m
     """.stripMargin)
 
-  result.show(30,false)
-  import spark.implicits._
-  val result_2 = result.select($"id",$"view_interval".cast("string"))
-  def catalogWrite =
-    s"""{
-       |"table":{"namespace":"default", "name":"user_profile"},
-       |"rowkey":"id",
-       |"columns":{
-       |  "id":{"cf":"rowkey", "col":"id", "type":"string"},
-       |  "view_interval":{"cf":"cf", "col":"view_interval", "type":"string"}
-       |}
-       |}""".stripMargin
+    result.show(30, false)
+    import spark.implicits._
+    val result_2 = result.select($"id", $"view_interval".cast("string"))
+
+    def catalogWrite =
+      s"""{
+         |"table":{"namespace":"default", "name":"user_profile"},
+         |"rowkey":"id",
+         |"columns":{
+         |  "id":{"cf":"rowkey", "col":"id", "type":"string"},
+         |  "view_interval":{"cf":"cf", "col":"view_interval", "type":"string"}
+         |}
+         |}""".stripMargin
 
 
-  result_2.write
-    .option(HBaseTableCatalog.tableCatalog, catalogWrite)
-    .option(HBaseTableCatalog.newTable, "5")
-    .format("org.apache.spark.sql.execution.datasources.hbase")
-    .save()
-}
+    result_2.write
+      .option(HBaseTableCatalog.tableCatalog, catalogWrite)
+      .option(HBaseTableCatalog.newTable, "5")
+      .format("org.apache.spark.sql.execution.datasources.hbase")
+      .save()
+  }
 
   /*
 +---+----------------+
@@ -473,45 +483,45 @@ def ViewInterval()={
 +---+----------------+
 | 51|            5248|
    */
-def MaxOrderAmount()={
-  val df_ = spark.sql(
-    """
-      |select memberid as id, cast(orderamount as decimal) as orderamount,from_unixtime(finishtime, 'yyyy-MM-dd HH:mm:ss') as finishtime
-      |from source_order_2
-      |where memberid<951
+  def MaxOrderAmount() = {
+    val df_ = spark.sql(
+      """
+        |select memberid as id, cast(orderamount as decimal) as orderamount,from_unixtime(finishtime, 'yyyy-MM-dd HH:mm:ss') as finishtime
+        |from source_order_2
+        |where memberid<951
     """.stripMargin)
-  df_.createOrReplaceTempView("df_")
-  df_.show(20)
+    df_.createOrReplaceTempView("df_")
+    df_.show(20)
 
-  val result = spark.sql(
-    """
-      |select id, max(orderamount) as max_order_amount
-      |from df_
-      |where year(finishtime)=2019 and dayofyear(finishtime)>180 and dayofyear(finishtime)<210
-      |group by id
+    val result = spark.sql(
+      """
+        |select id, max(orderamount) as max_order_amount
+        |from df_
+        |where year(finishtime)=2019 and dayofyear(finishtime)>180 and dayofyear(finishtime)<210
+        |group by id
     """.stripMargin)
-  result.show(20)
+    result.show(20)
 
-  import spark.implicits._
-  val result_2 = result.select($"id",$"max_order_amount".cast("string"))
+    import spark.implicits._
+    val result_2 = result.select($"id", $"max_order_amount".cast("string"))
 
-  def catalogWrite =
-    s"""{
-       |"table":{"namespace":"default", "name":"user_profile"},
-       |"rowkey":"id",
-       |"columns":{
-       |  "id":{"cf":"rowkey", "col":"id", "type":"string"},
-       |  "max_order_amount":{"cf":"cf", "col":"max_order_amount", "type":"string"}
-       |}
-       |}""".stripMargin
+    def catalogWrite =
+      s"""{
+         |"table":{"namespace":"default", "name":"user_profile"},
+         |"rowkey":"id",
+         |"columns":{
+         |  "id":{"cf":"rowkey", "col":"id", "type":"string"},
+         |  "max_order_amount":{"cf":"cf", "col":"max_order_amount", "type":"string"}
+         |}
+         |}""".stripMargin
 
 
-  result_2.write
-    .option(HBaseTableCatalog.tableCatalog, catalogWrite)
-    .option(HBaseTableCatalog.newTable, "5")
-    .format("org.apache.spark.sql.execution.datasources.hbase")
-    .save()
-}
+    result_2.write
+      .option(HBaseTableCatalog.tableCatalog, catalogWrite)
+      .option(HBaseTableCatalog.newTable, "5")
+      .format("org.apache.spark.sql.execution.datasources.hbase")
+      .save()
+  }
 
   /*
 +---+----------------+
@@ -519,7 +529,7 @@ def MaxOrderAmount()={
 +---+----------------+
 | 51|       1658.8286|
    */
-  def AvgOrderAmount()={
+  def AvgOrderAmount() = {
     val df_ = spark.sql(
       """
         |select memberid as id, cast(orderamount as decimal) as orderamount,from_unixtime(finishtime, 'yyyy-MM-dd HH:mm:ss') as finishtime
@@ -537,6 +547,7 @@ def MaxOrderAmount()={
         |group by id
       """.stripMargin)
     result.show(20)
+
     def catalogWrite =
       s"""{
          |"table":{"namespace":"default", "name":"user_profile"},
@@ -547,7 +558,7 @@ def MaxOrderAmount()={
          |}
          |}""".stripMargin
     import spark.implicits._
-    val result_2 = result.select($"id",$"avg_order_amount".cast("string"))
+    val result_2 = result.select($"id", $"avg_order_amount".cast("string"))
 
     result_2.write
       .option(HBaseTableCatalog.tableCatalog, catalogWrite)
@@ -558,17 +569,17 @@ def MaxOrderAmount()={
 
 
   //未使用
-  def ConsumptionCycleModel(user_id:Integer):Double={
-    val df_tmp_data =source_user
+  def ConsumptionCycleModel(user_id: Integer): Double = {
+    val df_tmp_data = source_user
       .select(source_user.col("id"))
-      .where(source_user.col("id")===user_id)
+      .where(source_user.col("id") === user_id)
 
-    if (df_tmp_data.count()==0)
+    if (df_tmp_data.count() == 0)
       return -1
 
     val df_user_finishTime = source_order
-      .join(df_tmp_data, df_tmp_data.col("id")===source_order.col("memberId"))
-      .select(df_tmp_data.col("id"),source_order.col("finishTime"))
+      .join(df_tmp_data, df_tmp_data.col("id") === source_order.col("memberId"))
+      .select(df_tmp_data.col("id"), source_order.col("finishTime"))
     df_user_finishTime.createOrReplaceTempView("df_user_finishTime")
 
     val max_finishTime = spark.sql(
@@ -597,36 +608,36 @@ def MaxOrderAmount()={
          |select count(finishTime)
          |from df_user_recentTime
       """.stripMargin).collect()(0).getLong(0)
-    if(count_finishTime<=1)
+    if (count_finishTime <= 1)
       return -2
 
-    return (max_finishTime-min_finishTime)/count_finishTime
+    return (max_finishTime - min_finishTime) / count_finishTime
 
   }
 
   //未使用
-  def ConsumptionCycleModel():Integer={
+  def ConsumptionCycleModel(): Integer = {
     return 0
     val df_tmp_data = source_user
-      .join(source_order,source_user.col("id")===source_order.col("memberId"))
-      .select(source_user.col("id") as "id",source_order.col("finishTime") as "finishTime")
+      .join(source_order, source_user.col("id") === source_order.col("memberId"))
+      .select(source_user.col("id") as "id", source_order.col("finishTime") as "finishTime")
 
     val df_tmp_maxTime = df_tmp_data
       .groupBy("id")
-      .agg(max("finishTime")as "max_time")
-      .select(col("id"),col("max_Time"))
+      .agg(max("finishTime") as "max_time")
+      .select(col("id"), col("max_Time"))
 
 
     val df_tmp_recentTime = df_tmp_data
-      .join(df_tmp_maxTime,df_tmp_data.col("id")===df_tmp_maxTime.col("id"))
-      .select(df_tmp_data.col("id") as "id",count("finishTime") as "count",min("finishTime") as "min_time")
-      .where(df_tmp_data.col("finishTime")>(df_tmp_maxTime.col("max_Time")-15552000))
+      .join(df_tmp_maxTime, df_tmp_data.col("id") === df_tmp_maxTime.col("id"))
+      .select(df_tmp_data.col("id") as "id", count("finishTime") as "count", min("finishTime") as "min_time")
+      .where(df_tmp_data.col("finishTime") > (df_tmp_maxTime.col("max_Time") - 15552000))
 
     val df_result = df_tmp_maxTime
-      .join(df_tmp_recentTime,df_tmp_maxTime.col("id")===df_tmp_recentTime.col("id"))
-      .select(df_tmp_maxTime.col("id"),(col("max_time")-col("min_time"))/col("count") as "avg_consumptionCycle")
+      .join(df_tmp_recentTime, df_tmp_maxTime.col("id") === df_tmp_recentTime.col("id"))
+      .select(df_tmp_maxTime.col("id"), (col("max_time") - col("min_time")) / col("count") as "avg_consumptionCycle")
 
-    df_result.show(20,false)
+    df_result.show(20, false)
 
     return 0
   }

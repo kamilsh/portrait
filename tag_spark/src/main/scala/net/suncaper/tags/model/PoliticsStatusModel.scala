@@ -36,7 +36,7 @@ object PoliticsStatusModel {
         .otherwise("其他")
         .as("political_status")
     )
-//    result.show(10,false)
+    //    result.show(10,false)
 
     def catalogWrite =
       s"""{

@@ -24,11 +24,11 @@ object EmailModel {
          |  }
          |}""".stripMargin
 
-        val source = spark.read
-          .option(HBaseTableCatalog.tableCatalog , catalog)
-          .format("org.apache.spark.sql.execution.datasources.hbase")
-          .load()
-//        source.show(10,false)
+    val source = spark.read
+      .option(HBaseTableCatalog.tableCatalog, catalog)
+      .format("org.apache.spark.sql.execution.datasources.hbase")
+      .load()
+    //        source.show(10,false)
 
 
     val readDF: DataFrame = spark.read
@@ -37,12 +37,12 @@ object EmailModel {
       .load()
 
     val result = readDF
-//    val result = readDF.select('id,
-//      when('gender === "1", "男")
-//        .when('gender === "2", "女")
-//        .otherwise("未知")
-//        .as("gender")
-//    )
+    //    val result = readDF.select('id,
+    //      when('gender === "1", "男")
+    //        .when('gender === "2", "女")
+    //        .otherwise("未知")
+    //        .as("gender")
+    //    )
     //result.show()
 
     def catalogWrite =

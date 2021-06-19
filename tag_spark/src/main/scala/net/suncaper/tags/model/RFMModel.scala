@@ -16,8 +16,7 @@ object RFMModel {
     import spark.implicits._
 
 
-
-//    1、读取数据
+    //    1、读取数据
     def catalog =
       s"""{
          |  "table":{"namespace":"default", "name":"tbl_orders"},
@@ -36,8 +35,8 @@ object RFMModel {
       .format("org.apache.spark.sql.execution.datasources.hbase")
       .load()
 
-//    2、数据归一化处理
-val colRencency = "rencency"
+    //    2、数据归一化处理
+    val colRencency = "rencency"
     val colFrequency = "frequency"
     val colMoneyTotal = "moneyTotal"
     val colFeature = "feature"
@@ -81,29 +80,29 @@ val colRencency = "rencency"
 
     val RFMScoreResult = RFMResult.select('memberId, recencyScore, frequencyScore, moneyTotalScore)
 
-//    RFMScoreResult.show(50,false)
+    //    RFMScoreResult.show(50,false)
 
 
     //    3、训练K均值算法模型
     val vectorDF = new VectorAssembler()
-        .setInputCols(Array(colRencency, colFrequency, colMoneyTotal))
-        .setOutputCol(colFeature)
-        .transform(RFMScoreResult)
-    vectorDF.show(50,false)
+      .setInputCols(Array(colRencency, colFrequency, colMoneyTotal))
+      .setOutputCol(colFeature)
+      .transform(RFMScoreResult)
+    vectorDF.show(50, false)
 
     val kmeans = new KMeans()
       .setK(7)
       .setSeed(1000)
-      .setMaxIter(2)//迭代次数
+      .setMaxIter(2) //迭代次数
       .setFeaturesCol(colFeature)
       .setPredictionCol(colPredict)
 
     // train model
     val model = kmeans.fit(vectorDF)
 
-//    //    4、预测分类
-//    val predicted = model.transform(vectorDF)
-//    predicted.show(50, false)
+    //    //    4、预测分类
+    //    val predicted = model.transform(vectorDF)
+    //    predicted.show(50, false)
     //TODO: 将结果写入HBASE
 
     //4、保存模型到HDFS

@@ -30,7 +30,7 @@ object LoginFrequencyModel {
       .option(HBaseTableCatalog.tableCatalog, catalog)
       .format("org.apache.spark.sql.execution.datasources.hbase")
       .load()
-    val readDF=readTempDF.na.drop(List("loc_url"))
+    val readDF = readTempDF.na.drop(List("loc_url"))
 
 
     val temp1 = readDF
@@ -38,19 +38,19 @@ object LoginFrequencyModel {
       .groupBy('global_user_id)
       .agg(count("loc_url") as "count")
 
-//    temp1.orderBy(asc("count")).show(50,false)
-//    temp1.printSchema()
+    //    temp1.orderBy(asc("count")).show(50,false)
+    //    temp1.printSchema()
 
     //10<=count<=30 1-10很少 10-20一般 20-30经常
     val result = temp1.select(col("global_user_id").as("id"),
-      when('count < 1,"无")
-        .when('count < 10 and('count >=1),"很少")
-        .when('count < 20 and('count >=10),"一般")
+      when('count < 1, "无")
+        .when('count < 10 and ('count >= 1), "很少")
+        .when('count < 20 and ('count >= 10), "一般")
         .otherwise("经常")
         .as("login_frequency")
     )
-//    result.filter("id = 99")show(10,false)
-//    result.printSchema()
+    //    result.filter("id = 99")show(10,false)
+    //    result.printSchema()
 
     def catalogWrite =
       s"""{

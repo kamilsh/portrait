@@ -37,7 +37,7 @@ object PaymentModel {
       .where('row_num === 1)
       .withColumnRenamed("memberId", "id").drop("count", "row_num")
 
-//    result.show(20, false)
+    //    result.show(20, false)
 
     def catalogWrite =
       s"""{

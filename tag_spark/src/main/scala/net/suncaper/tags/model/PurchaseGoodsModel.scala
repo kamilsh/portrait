@@ -41,16 +41,16 @@ object PurchaseGoodsModel {
       .format("org.apache.spark.sql.execution.datasources.hbase")
       .load()
 
-      val source1=sourceTemp1.select(col("memberId").as("id"),col("orderSn"))
+    val source1 = sourceTemp1.select(col("memberId").as("id"), col("orderSn"))
 
 
     val source2: DataFrame = spark.read
       .option(HBaseTableCatalog.tableCatalog, catalog2)
       .format("org.apache.spark.sql.execution.datasources.hbase")
       .load()
-      .select('cOrderSn,col("productName").as("purchase_goods"))
+      .select('cOrderSn, col("productName").as("purchase_goods"))
 
-    val source3 = source1.join(source2,source1.col("orderSn")===source2.col("cOrderSn"),"inner")
+    val source3 = source1.join(source2, source1.col("orderSn") === source2.col("cOrderSn"), "inner")
       .drop("cOrderSn")
       .drop("orderSn")
 
@@ -75,8 +75,8 @@ object PurchaseGoodsModel {
          |}""".stripMargin
 
 
-//    result.filter("id=99").show(1000,false)
-//    result.printSchema()
+    //    result.filter("id=99").show(1000,false)
+    //    result.printSchema()
 
 
     result.write

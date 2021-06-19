@@ -34,7 +34,7 @@ object AgeGroupModel {
 
 
     val result = readDF.select('id,
-      when('birthday    >= "2020", "20后")
+      when('birthday >= "2020", "20后")
         .when('birthday >= "2010", "10后")
         .when('birthday >= "2000", "00后")
         .when('birthday >= "1990", "90后")
@@ -45,18 +45,18 @@ object AgeGroupModel {
         .otherwise("其他")
         .as("AgeGroup")
     )
-//val result = readDF.select('id,
-//  when('birthday >= "1950", "50后")
-//    .when('birthday >= "1960", "60后")
-//    .when('birthday >= "1970", "70后")
-//    .when('birthday >= "1980", "80后")
-//    .when('birthday >= "1990", "90后")
-//    .when('birthday >= "2000", "00后")
-//    .when('birthday >= "2010", "10后")
-//    .when('birthday    >= "2020", "20后")
-//    .otherwise("其他")
-//    .as("AgeGroup")
-//)
+    //val result = readDF.select('id,
+    //  when('birthday >= "1950", "50后")
+    //    .when('birthday >= "1960", "60后")
+    //    .when('birthday >= "1970", "70后")
+    //    .when('birthday >= "1980", "80后")
+    //    .when('birthday >= "1990", "90后")
+    //    .when('birthday >= "2000", "00后")
+    //    .when('birthday >= "2010", "10后")
+    //    .when('birthday    >= "2020", "20后")
+    //    .otherwise("其他")
+    //    .as("AgeGroup")
+    //)
 
     def catalogWrite =
       s"""{

@@ -47,7 +47,6 @@ object MaritalStatusModel {
          |}""".stripMargin
 
 
-
     result.write
       .option(HBaseTableCatalog.tableCatalog, catalogWrite)
       .option(HBaseTableCatalog.newTable, "5")

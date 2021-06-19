@@ -37,26 +37,26 @@ object RecentlyLoginModel {
     val daysDF: DataFrame = source
       .groupBy("global_user_id") //按照会员ID：global_user_id分组
       .agg(
-      max("log_time").as("recently_login_time")//获取最近一次订单完成时间 recently_login_time
+        max("log_time").as("recently_login_time") //获取最近一次订单完成时间 recently_login_time
       )
-      .filter("global_user_id<951")//过滤无效用户数据
+      .filter("global_user_id<951") //过滤无效用户数据
       .select(
-          $"global_user_id".as("id"),
-          datediff(date_sub(current_date(), days_range), $"recently_login_time").as("recently_login_time")
+        $"global_user_id".as("id"),
+        datediff(date_sub(current_date(), days_range), $"recently_login_time").as("recently_login_time")
       )
-//    daysDF.orderBy(daysDF("recently_login_time").desc).show(10,false)
-//    daysDF.printSchema()
+    //    daysDF.orderBy(daysDF("recently_login_time").desc).show(10,false)
+    //    daysDF.printSchema()
 
     val result = daysDF.select('id,
-      when('recently_login_time <= "1","1天内")
-        .when('recently_login_time <= "7","7天内")
-        .when('recently_login_time <= "14","14天内")
-        .when('recently_login_time <= "30","30天内")
+      when('recently_login_time <= "1", "1天内")
+        .when('recently_login_time <= "7", "7天内")
+        .when('recently_login_time <= "14", "14天内")
+        .when('recently_login_time <= "30", "30天内")
         .otherwise("其他")
         .as("recently_login_time")
     )
-//    result.orderBy(result("recently_login_time").asc).show(10,false)
-//    result.printSchema()
+    //    result.orderBy(result("recently_login_time").asc).show(10,false)
+    //    result.printSchema()
 
 
     def catalogWrite =
