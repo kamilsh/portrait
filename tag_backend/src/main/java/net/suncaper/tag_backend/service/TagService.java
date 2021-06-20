@@ -31,9 +31,23 @@ public class TagService {
         List<Tag> businessTags = tagDAO.findAllByPid(BUSINESSPID);
         List<Tag> actionTags = tagDAO.findAllByPid(ACTIONPID);
 
+        List<Tag> newBusinessTags = new ArrayList<>();
+        for (Tag businessTag : businessTags) {
+            if ("客单价".equals(businessTag.getName()) || "单笔最高".equals(businessTag.getName()))
+                continue;
+            newBusinessTags.add(businessTag);
+        }
+
+        List<Tag> newActionTags = new ArrayList<>();
+        for (Tag tag : actionTags) {
+            if ("浏览页面".equals(tag.getName()) || "设备类型".equals(tag.getName()))
+                continue;
+            newActionTags.add(tag);
+        }
+
         JSONObject personalOption = getAttributeByTag(personalTags, PERSONALPID, "人口属性");
-        JSONObject businessOption = getAttributeByTag(businessTags, BUSINESSPID, "商业属性");
-        JSONObject actionOption = getAttributeByTag(actionTags, ACTIONPID, "行为属性");
+        JSONObject businessOption = getAttributeByTag(newBusinessTags, BUSINESSPID, "商业属性");
+        JSONObject actionOption = getAttributeByTag(newActionTags, ACTIONPID, "行为属性");
 
         List<JSONObject> jsonObjectList = new ArrayList<>();
         jsonObjectList.add(personalOption);

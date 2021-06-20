@@ -1,4 +1,4 @@
-package net.suncaper
+package net.suncaper.tags.model
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.execution.datasources.hbase.HBaseTableCatalog

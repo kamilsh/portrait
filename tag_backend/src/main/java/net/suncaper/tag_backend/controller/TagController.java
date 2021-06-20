@@ -70,6 +70,8 @@ public class TagController {
         List<String> remarks = tagService.getRemarkByID(tagList);
         List<String> names = tagService.getNameByID(attributeList);
         List<JSONObject> tags = TableUtil.filterList(remarks, names);
+        if (tags.isEmpty())
+            return ResultFactory.buildFailResult("未找到该描述用户");
         return ResultFactory.buildSuccessResult(tags);
     }
 

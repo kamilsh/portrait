@@ -336,6 +336,120 @@ public class TableUtil {
         return output;
     }
 
+    public static List<JSONObject> getViewPage() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int order = 0;
+        int catalog = 0;
+        int goods = 0;
+        int login = 0;
+        int home = 0;
+        int other = 0;
+
+        for (Result result : qualifierFilter(user_profile, "view_page")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                for (String s : value.split(",")) {
+                    String[] split = s.split(":");
+                    switch (split[0]) {
+                        case "订单页":
+                            order += Integer.parseInt(split[1]);
+                            break;
+                        case "分类页":
+                            catalog += Integer.parseInt(split[1]);
+                            break;
+                        case "商品页":
+                            goods += Integer.parseInt(split[1]);
+                            break;
+                        case "登录页":
+                            login += Integer.parseInt(split[1]);
+                            break;
+                        case "主页":
+                            home += Integer.parseInt(split[1]);
+                            break;
+                        case "其它":
+                            other += Integer.parseInt(split[1]);
+                            break;
+                        default:
+                            System.out.println("view_page 错误，读取到 view_page 为: " + value);
+                    }
+                }
+            }
+        }
+        map.put("订单页", order);
+        map.put("分类页", catalog);
+        map.put("商品页", goods);
+        map.put("登录页", login);
+        map.put("主页", home);
+        map.put("其它", other);
+
+        for (String s : Arrays.asList("订单页", "分类页", "商品页", "登录页", "主页", "其它")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
+    public static List<JSONObject> getDeviceType() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int windows = 0;
+        int iOS = 0;
+        int mac = 0;
+        int android = 0;
+        int linux = 0;
+        int other = 0;
+
+        for (Result result : qualifierFilter(user_profile, "device_type")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                for (String s : value.split(",")) {
+                    String[] split = s.split(":");
+                    switch (split[0]) {
+                        case "Windows":
+                            windows += Integer.parseInt(split[1]);
+                            break;
+                        case "iOS":
+                            iOS += Integer.parseInt(split[1]);
+                            break;
+                        case "Mac":
+                            mac += Integer.parseInt(split[1]);
+                            break;
+                        case "Android":
+                            android += Integer.parseInt(split[1]);
+                            break;
+                        case "Linux":
+                            linux += Integer.parseInt(split[1]);
+                            break;
+                        case "other":
+                            other += Integer.parseInt(split[1]);
+                            break;
+                        default:
+                            System.out.println("device_type 错误，读取到 device_type 为: " + value);
+                    }
+                }
+            }
+        }
+        map.put("Windows", windows);
+        map.put("iOS", iOS);
+        map.put("Mac", mac);
+        map.put("Android", android);
+        map.put("Linux", linux);
+        map.put("other", other);
+
+        for (String s : Arrays.asList("Windows", "iOS", "Mac", "Android", "Linux", "other")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
     public static List<JSONObject> getMaritalStatus() throws IOException {
         List<JSONObject> output = new ArrayList<>();
         Map<String, Integer> map = new HashMap<>();
@@ -508,6 +622,104 @@ public class TableUtil {
         return output;
     }
 
+    public static List<JSONObject> getViewInterval() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int interval1 = 0;
+        int interval8 = 0;
+        int interval13 = 0;
+        int interval18 = 0;
+        int interval22 = 0;
+
+        for (Result result : qualifierFilter(user_profile, "view_interval")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "1:00-7:00":
+                        interval1++;
+                        break;
+                    case "8:00-12:00":
+                        interval8++;
+                        break;
+                    case "13:00-17:00":
+                        interval13++;
+                        break;
+                    case "18:00-21:00":
+                        interval18++;
+                        break;
+                    case "22:00-24:00":
+                        interval22++;
+                        break;
+                    default:
+                        System.out.println("view_interval 错误，读取到 view_interval 为: " + value);
+                }
+            }
+        }
+        map.put("1:00-7:00", interval1);
+        map.put("8:00-12:00", interval8);
+        map.put("13:00-17:00", interval13);
+        map.put("18:00-21:00", interval18);
+        map.put("22:00-24:00", interval22);
+
+        for (String s : Arrays.asList("1:00-7:00", "8:00-12:00", "13:00-17:00", "18:00-21:00", "22:00-24:00")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
+    public static List<JSONObject> getViewFrequency() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int never = 0;
+        int seldom = 0;
+        int sometime = 0;
+        int often = 0;
+        int frequent = 0;
+
+        for (Result result : qualifierFilter(user_profile, "view_frequency")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "从不":
+                        never++;
+                        break;
+                    case "很少":
+                        seldom++;
+                        break;
+                    case "偶尔":
+                        sometime++;
+                        break;
+                    case "经常":
+                        often++;
+                        break;
+                    case "频繁":
+                        frequent++;
+                        break;
+                    default:
+                        System.out.println("view_frequency 错误，读取到 view_frequency 为: " + value);
+                }
+            }
+        }
+        map.put("从不", never);
+        map.put("很少", seldom);
+        map.put("偶尔", sometime);
+        map.put("经常", often);
+        map.put("频繁", frequent);
+
+        for (String s : Arrays.asList("从不", "很少", "偶尔", "经常", "频繁")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
     public static List<JSONObject> getPaymentCode() throws IOException {
         List<JSONObject> output = new ArrayList<>();
         Map<String, Integer> map = new HashMap<>();
@@ -543,6 +755,50 @@ public class TableUtil {
         map.put("信用卡", credit);
 
         for (String s : Arrays.asList("支付宝", "微信", "储蓄卡", "信用卡")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
+
+        return output;
+    }
+
+    public static List<JSONObject> getLoginFrequency() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int never = 0;
+        int seldom = 0;
+        int sometime = 0;
+        int often = 0;
+
+        for (Result result : qualifierFilter(user_profile, "login_frequency")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "无":
+                        never++;
+                        break;
+                    case "很少":
+                        seldom++;
+                        break;
+                    case "一般":
+                        sometime++;
+                        break;
+                    case "经常":
+                        often++;
+                        break;
+                    default:
+                        System.out.println("loginFrequency 错误，读取到 loginFrequency 为: " + value);
+                }
+            }
+        }
+        map.put("无", never);
+        map.put("很少", seldom);
+        map.put("一般", sometime);
+        map.put("经常", often);
+
+        for (String s : Arrays.asList("无", "很少", "一般", "经常")) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("value", map.get(s));
             jsonObject.put("name", s);
@@ -696,6 +952,55 @@ public class TableUtil {
         }
         table.close();
         conn.close();
+
+        return output;
+    }
+
+    public static List<JSONObject> getRecentlyLoginTime() throws IOException {
+        List<JSONObject> output = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        int day1 = 0;
+        int day7 = 0;
+        int day14 = 0;
+        int day30 = 0;
+        int other = 0;
+
+        for (Result result : qualifierFilter(user_profile, "recently_login_time")) {
+            for (Cell cell : result.rawCells()) {
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                switch (value) {
+                    case "1天内":
+                        day1++;
+                        break;
+                    case "7天内":
+                        day7++;
+                        break;
+                    case "14天内":
+                        day14++;
+                        break;
+                    case "30天内":
+                        day30++;
+                        break;
+                    case "其他":
+                        other++;
+                        break;
+                    default:
+                        System.out.println("recently_login_time 错误，读取到 recently_login_time 为: " + value);
+                }
+            }
+        }
+        map.put("1天内", day1);
+        map.put("7天内", day7);
+        map.put("14天内", day14);
+        map.put("30天内", day30);
+        map.put("其他", other);
+
+        for (String s : Arrays.asList("1天内", "7天内", "14天内", "30天内", "其他")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("value", map.get(s));
+            jsonObject.put("name", s);
+            output.add(jsonObject);
+        }
 
         return output;
     }

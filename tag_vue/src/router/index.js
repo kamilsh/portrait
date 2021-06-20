@@ -20,6 +20,12 @@ import ConsumeCycle from '../components/basic/charts/ConsumeCycle'
 import AvgOrderAmount from '../components/basic/charts/AvgOrderAmount'
 import PaymentCode from '../components/basic/charts/PaymentCode'
 import MaxOrderAmount from '../components/basic/charts/MaxOrderAmount'
+import ViewPage from '../components/basic/charts/ViewPage'
+import viewFrequency from '../components/basic/charts/viewFrequency'
+import deviceType from '../components/basic/charts/deviceType'
+import viewInterval from '../components/basic/charts/viewInterval'
+import loginFrequency from '../components/basic/charts/loginFrequency'
+import RecentlyLoginTime from '../components/basic/charts/RecentlyLoginTime'
 
 Vue.use(Router)
 
@@ -32,7 +38,7 @@ export default new Router({
     {
       path: '/',
       name: 'whitePage',
-      redirect: '/home'
+      redirect: '/login'
     },
     {
       path: '/login',
@@ -121,7 +127,39 @@ export default new Router({
             {
               path: '/home/basic/action',
               name: 'action',
-              component: Action
+              component: Action,
+              children: [
+                {
+                  path: '/home/basic/action/viewPage',
+                  name: 'viewPage',
+                  component: ViewPage
+                },
+                {
+                  path: '/home/basic/action/viewFrequency',
+                  name: 'viewFrequency',
+                  component: viewFrequency
+                },
+                {
+                  path: '/home/basic/action/deviceType',
+                  name: 'deviceType',
+                  component: deviceType
+                },
+                {
+                  path: '/home/basic/action/viewInterval',
+                  name: 'viewInterval',
+                  component: viewInterval
+                },
+                {
+                  path: '/home/basic/action/loginFrequency',
+                  name: 'loginFrequency',
+                  component: loginFrequency
+                },
+                {
+                  path: '/home/basic/action/recentlyLoginTime',
+                  name: 'recentlyLoginTime',
+                  component: RecentlyLoginTime
+                }
+              ]
             }
           ]
         },
@@ -141,11 +179,6 @@ export default new Router({
           component: Combination
         }
       ]
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: Combination
     }
   ]
 })

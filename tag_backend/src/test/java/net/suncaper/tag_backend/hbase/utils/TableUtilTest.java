@@ -88,4 +88,9 @@ class TableUtilTest {
     void getAvgOrderAmount() throws IOException {
         System.out.println(TableUtil.getAvgOrderAmount());
     }
+
+    @Test
+    void getMaritalStatus() throws IOException {
+        System.out.println(TableUtil.getMaritalStatus());
+    }
 }

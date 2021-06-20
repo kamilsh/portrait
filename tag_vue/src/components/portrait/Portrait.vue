@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%">
     <div><search-bar @onSearch="getData" ref="searchBar"></search-bar></div>
-    <div id="wordcloud" :style="{width: '100%', height: '100%'}" :data="worddata"></div>
+    <div id="wordcloud" style="width: 80vw;height: 80vh;" :data="worddata"></div>
   </div>
 </template>
 

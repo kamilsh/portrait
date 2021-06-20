@@ -95,7 +95,7 @@ export default {
       //   },
       //   {
       //     'id': 40,
-      //     'name': '近7日登录频率',
+      //     'name': '登录频率',
       //     'industry': '标签',
       //     'rule': null,
       //     'business': '用户行为数据中的登录频率:无、较少、一般、经常',
@@ -147,17 +147,23 @@ export default {
     handleClick (row) {
       // console.log(row)
       switch (row.name) {
-        case '消费周期':
-          this.$router.push('/home/basic/business/consumeCycle')
+        case '最近登录':
+          this.$router.push('/home/basic/action/recentlyLoginTime')
           break
-        case '客单价':
-          this.$router.push('/home/basic/business/avgOrderAmount')
+        case '浏览页面':
+          this.$router.push('/home/basic/action/viewPage')
           break
-        case '支付方式':
-          this.$router.push('/home/basic/business/paymentCode')
+        case '访问频率':
+          this.$router.push('/home/basic/action/viewFrequency')
           break
-        case '单笔最高':
-          this.$router.push('/home/basic/business/maxOrderAmount')
+        case '设备类型':
+          this.$router.push('/home/basic/action/deviceType')
+          break
+        case '浏览时段':
+          this.$router.push('/home/basic/action/viewInterval')
+          break
+        case '登录频率':
+          this.$router.push('/home/basic/action/loginFrequency')
           break
       }
     }
